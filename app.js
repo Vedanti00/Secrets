@@ -1,10 +1,10 @@
 //jshint esversion:6
 
+const dotenv = require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
-const dotenv = require("dotenv");
 const encrypt = require("mongoose-encryption");
 
 const app = express();
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema ({
 });
 
 const secret = "Thisisastring";
-userSchema.plugin(encrypt, { secret: secret , encryptedFields: ["password"]});// Should be before mongoose model
+userSchema.plugin(encrypt, { secret: process.env.SECRET , encryptedFields: ["password"]});// Should be before mongoose model
 
 const User = mongoose.model("User", userSchema);
 
