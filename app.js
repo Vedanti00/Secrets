@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require('mongoose');
 const dotenv = require("dotenv");
+const encrypt = require("mongoose-encryption");
 
 const app = express();
 
@@ -17,10 +18,13 @@ app.use(express.static("public"));
 
 mongoose.connect("mongodb://127.0.0.1:27017/userDB");
 
-const userSchema = {
+const userSchema = new mongoose.Schema ({
   email: String,
   password: String
-};
+});
+
+const secret = "Thisisastring";
+userSchema.plugin(encrypt, { secret: secret , encryptedFields: ["password"]});// Should be before mongoose model
 
 const User = mongoose.model("User", userSchema);
 
